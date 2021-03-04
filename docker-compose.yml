@@ -1,0 +1,18 @@
+version: '3'
+services:
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis:latest
+    ports:
+      - '127.0.0.1:6379:6379'
+
+  rq-worker:
+    hostname: rq-worker
+    build: rq-worker
+    links:
+      - redis
+    volumes:
+      - ./rq-data:/data
+      - ./rq-worker/example/jobs:/root/jobs
+    scale: 1
